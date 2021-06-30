@@ -21,7 +21,10 @@ def google_sheet_csv_to_yolo_csv(input_file_path='./training/data.csv', output_f
                         str(int(rest[i*5+1]) + int(rest[i*5+3])), rest[i*5+4],
                         ''
                     ]
-                output_file_stream.write(' '.join(output_values))
+                print(output_values)
+                output_file_stream.write(','.join(output_values[:len(output_values)-1]))
+                if i < int(len(rest) / 5) - 1:
+                    output_file_stream.write(" ")
 
             output_file_stream.write('\n')
 
