@@ -11,7 +11,7 @@ def google_sheet_csv_to_yolo_csv(input_file_path=INPUT_FILE_PATH, output_file_pa
     with open(output_file_path, 'w') as output_file_stream:
 
         for line in lines:
-            # TODO: validate each line
+            # TODO: validate each line.
 
             line = line.replace(',', ' ').replace('"', '').strip()
             image = line.split(' ')[0]
