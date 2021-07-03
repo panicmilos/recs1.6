@@ -2,7 +2,7 @@ import os
 from PIL import Image, ImageDraw
 
 INPUT_FILE_PATH = './yolo/training/data.csv'
-OUTPUT_FILE_PATH = './yolo/training/data_adapted.csv'
+OUTPUT_FILE_PATH = './yolo/training/data_train.csv'
 IMAGE_ROOT_DIR = './'
 
 images = {}

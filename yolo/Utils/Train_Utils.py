@@ -86,8 +86,8 @@ def create_model(
         model_body.load_weights(weights_path, by_name=True, skip_mismatch=True)
         print("Load weights {}.".format(weights_path))
         if freeze_body in [1, 2]:
-            # Freeze darknet53 body or freeze all but 3 output layers.
-            num = (185, len(model_body.layers) - 3)[freeze_body - 1]
+            # Freeze darknet53 body or freeze all but 7 output layers.
+            num = (185, len(model_body.layers) - 7)[freeze_body - 1]
             for i in range(num):
                 model_body.layers[i].trainable = False
             print(
