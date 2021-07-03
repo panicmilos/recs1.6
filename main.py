@@ -1,11 +1,15 @@
 import os
+import random
 from PIL import Image, ImageDraw
 
 INPUT_FILE_PATH = './yolo/training/data.csv'
 OUTPUT_FILE_PATH = './yolo/training/data_adapted.csv'
 IMAGE_ROOT_DIR = './'
 
-images = {}
+
+TRAINING_OUTPUT_FILE = './yolo/training/training_data.csv'
+TEST_OUTPUT_FILE = './yolo/training/test_data.csv'
+bounding_boxes = {}
 
 """
     This function is used to convert csv exported from google sheet to
@@ -21,13 +25,13 @@ def google_sheet_csv_to_yolo_csv(input_file_path=INPUT_FILE_PATH, output_file_pa
             values = google_sheet_csv_line_to_yolo_values(line)
             image, rest = values[0] + '.jpg', values[1:]
 
-            images[image] = []
+            bounding_boxes[image] = []
 
             output_file_stream.write(image_root_dir + image + ' ')
 
             num_of_bounding_boxes = int(len(rest) / 5)
             for i in range(num_of_bounding_boxes):
-                images[image].append(rest[i*5: i*5+5])
+                bounding_boxes[image].append(rest[i * 5: i * 5 + 5])
                 output_file_stream.write(','.join(rest[i*5: i*5+5]))
                 if i < num_of_bounding_boxes - 1:
                     output_file_stream.write(" ")
@@ -75,7 +79,7 @@ def images_bounder(images_dir, images_dir_bounded=None):
         image = Image.open(images_dir + filename)
         draw = ImageDraw.Draw(image)
 
-        for bounding_box in images[filename]:
+        for bounding_box in bounding_boxes[filename]:
             bounding_box_top = (int(bounding_box[0]), int(bounding_box[1]))
             bounding_box_bottom = (int(bounding_box[2]), int(bounding_box[3]))
             bounding_box_color = 'blue' if bounding_box[4] == '0' else 'red'
@@ -84,9 +88,31 @@ def images_bounder(images_dir, images_dir_bounded=None):
         image.save(images_dir_bounded + filename[:-4] + '_bounded.jpg')
 
 
+def data_separator(input_file_path=INPUT_FILE_PATH, training_output_file=TRAINING_OUTPUT_FILE, test_output_file=TEST_OUTPUT_FILE, test_set=10):
+    with open(input_file_path, 'r') as input_file_stream:
+        lines = input_file_stream.readlines()
+
+    test_lines = random.sample(lines, int(len(lines)*test_set/100))
+
+    for test_line in test_lines:
+        lines.remove(test_line)
+
+    with open('./test_data_temporary.csv', 'w') as test_output_temp_file:
+        test_output_temp_file.writelines(test_lines)
+
+    with open('./training_data_temporary.csv', 'w') as training_output_temp_file:
+        training_output_temp_file.writelines(lines)
+
+    google_sheet_csv_to_yolo_csv('./test_data_temporary.csv', test_output_file)
+    google_sheet_csv_to_yolo_csv('./training_data_temporary.csv', training_output_file)
+
+    os.remove('./test_data_temporary.csv')
+    os.remove('./training_data_temporary.csv')
+
+
 if __name__ == "__main__":
     print("RECS1.6 Projekat by ~Serbedzija, ~Panic")
 
-    google_sheet_csv_to_yolo_csv()
-
+    #google_sheet_csv_to_yolo_csv()
+    data_separator()
     # images_bounder('C:/Games/HLAE/untitled_rec/images/')
