@@ -44,6 +44,24 @@ def detect_object(yolo, img_path, save_img, save_img_path="./", postfix=""):
     return prediction, image_array
 
 
+def detect_object_wo_io(yolo, image):
+    """
+    Call YOLO logo detector on input image.
+
+    Args:
+      yolo: keras-yolo3 initialized YOLO instance
+      image: image object
+    Returns:
+      prediction: list of bounding boxes in format (xmin,ymin,xmax,ymax,class_id,confidence)
+    """
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+
+    prediction, new_image = yolo.detect_image(image, show_stats=False)
+
+    return prediction
+
+
 def parse_input():
     """
     Ask user input for input images: pass path to individual images, directory

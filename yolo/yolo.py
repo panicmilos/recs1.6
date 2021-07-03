@@ -20,6 +20,7 @@ import tensorflow.python.keras.backend as K
 
 tf.disable_eager_execution()
 
+os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = 'true'
 
 class YOLO(object):
     _defaults = {
@@ -147,6 +148,7 @@ class YOLO(object):
                 image.height - (image.height % 32),
             )
             boxed_image = letterbox_image(image, new_image_size)
+
         image_data = np.array(boxed_image, dtype="float32")
         if show_stats:
             print(image_data.shape)
@@ -217,7 +219,7 @@ class YOLO(object):
 
         end = timer()
         if show_stats:
-            print("Time spent: {:.3f}sec".format(end - start))
+           print("Time spent: {:.3f}sec".format(end - start))
         return out_prediction, image
 
     def close_session(self):
