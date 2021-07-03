@@ -1,6 +1,8 @@
 import os
+import pyautogui
 from PIL import Image, ImageDraw
-from time import time
+from time import time, sleep
+import random
 
 INPUT_FILE_PATH = './yolo/training/data.csv'
 OUTPUT_FILE_PATH = './yolo/training/data_adapted.csv'
@@ -88,6 +90,13 @@ def images_bounder(images_dir, images_dir_bounded=None):
 if __name__ == "__main__":
     print("RECS1.6 Projekat by ~Serbedzija, ~Panic")
 
-    google_sheet_csv_to_yolo_csv()
+    #google_sheet_csv_to_yolo_csv()
+
+    for i in range(20):
+        image = pyautogui.screenshot()
+        image.save('C:/Users/acapa/OneDrive/Desktop/srcs/' + str(int(time())) + '.jpg')
+        pyautogui.moveTo(random.randint(0, 800), random.randint(0,800))
+        pyautogui.mouseDown(); sleep(0.1); pyautogui.mouseUp()
+        sleep(2)
 
     # images_bounder('C:/Games/HLAE/untitled_rec/images/')
