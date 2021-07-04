@@ -11,7 +11,17 @@ ReCS1.6 predstavlja projekat koji je sposoban da prepozna i klasifikuje timove i
 
 [Slike iz skupa podataka](https://drive.google.com/drive/u/2/folders/1JEGqHTQcQaakKBCeB5WB9aVWa_1sM1R8)   
 [Anotacije slika](https://docs.google.com/spreadsheets/d/1EqSbc1H2dcpJ1exzEMBKa17dtIzj-pyN0ISjIFKpWi4/edit?usp=sharing)   
-[Istrenirane težine](https://drive.google.com/drive/folders/1qV30VXTh__nHawVNBPEsrHV-v6kL4gCA?usp=sharing)    
+[Istrenirane težine](https://drive.google.com/drive/folders/1qV30VXTh__nHawVNBPEsrHV-v6kL4gCA?usp=sharing)
+
+## Rezultati:
+Ukupan _accuracy_ na 200 test slika iznosi 96.62%.
+
+| Tim | Precision | Recall  |
+| :----: |:---------:| :-----:|
+| Counter | 97.66% | 96.90% |
+| Terror | 98.77% | 99.38% |
+
+U folderu yolo/comparisons se nalaze slike za poređenje između mreže istrenirane nad 700 i nad 1800 slika.
 
 ## Korišćenje:
 
