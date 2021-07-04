@@ -93,19 +93,19 @@ def get_single_image_results(gt_boxes, pred_boxes, iou_thr=0.5):
         return {'true_positive': 0, 'false_positive': 0, 'false_negative': len(gt_boxes)}
 
     output = {'true_positive': 0, 'false_positive': 0, 'false_negative': 0}
-    matched_gt_boxes = {gt_box: False for gt_box in gt_boxes}
+    matched_gt_boxes = {index: False for index, _ in enumerate(gt_boxes)}
 
     for pred_box in pred_boxes:
         matched = False
-        for gt_box in gt_boxes:
-            if matched_gt_boxes[gt_box]:
+        for index, gt_box in enumerate(gt_boxes):
+            if matched_gt_boxes[index]:
                 continue
             iou = calc_iou(gt_box, pred_box)
 
             if iou > iou_thr:
                 output['true_positive'] += 1
                 matched = True
-                matched_gt_boxes[gt_box] = True
+                matched_gt_boxes[index] = True
                 break
         if not matched:
             output['false_positive'] += 1
