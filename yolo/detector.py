@@ -35,12 +35,12 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 # Set up folder names for default values
 data_folder = os.path.join(get_parent_dir(n=1), "yolo")
 
-image_folder = os.path.join(data_folder, "Source_Images")
+image_folder = os.path.join(data_folder, "training")
 
-image_test_folder = os.path.join(image_folder, "Test_Images")
+image_test_folder = os.path.join(image_folder, "test_images")
 
-detection_results_folder = os.path.join(image_folder, "Test_Image_Detection_Results")
-detection_results_file = os.path.join(detection_results_folder, "Detection_Results.csv")
+detection_results_folder = os.path.join(image_folder, "test_images_results")
+detection_results_file = os.path.join(detection_results_folder, "results.csv")
 
 model_folder = os.path.join(data_folder, "model_data")
 
