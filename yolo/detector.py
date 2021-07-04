@@ -4,7 +4,7 @@ import pyautogui
 from PIL import Image
 from pynput import keyboard
 import argparse
-from yolo.yolo import YOLO, detect_video, detect_webcam
+from yolo import YOLO, detect_video, detect_webcam
 from timeit import default_timer as timer
 import pandas as pd
 import numpy as np
