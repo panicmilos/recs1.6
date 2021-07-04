@@ -87,70 +87,39 @@ def calc_precision_recall(img_results):
 
 
 def get_single_image_results(gt_boxes, pred_boxes, iou_thr=0.5):
-    """Calculates number of true_pos, false_pos, false_neg from single batch of boxes.
-    Args:
-        gt_boxes (list of list of floats): list of locations of ground truth
-            objects as [xmin, ymin, xmax, ymax]
-        pred_boxes (list of list of floats): ist of locations of predicted
-            objects as [xmin, ymin, xmax, ymax]
-        iou_thr (float): value of IoU to consider as threshold for a
-            true prediction.
-    Returns:
-        dict: true positives (int), false positives (int), false negatives (int)
-    """
-    all_pred_indices = range(len(pred_boxes))
-    all_gt_indices = range(len(gt_boxes))
-    if len(all_pred_indices) == 0:
-        tp = 0
-        fp = 0
-        fn = 0
-        return {'true_positive': tp, 'false_positive': fp, 'false_negative': fn}
-    if len(all_gt_indices) == 0:
-        tp = 0
-        fp = 0
-        fn = 0
-        return {'true_positive': tp, 'false_positive': fp, 'false_negative': fn}
+    if len(gt_boxes) == 0:
+        return {'true_positive': 0, 'false_positive': len(pred_boxes), 'false_negative': 0}
+    if len(pred_boxes) == 0:
+        return {'true_positive': 0, 'false_positive': 0, 'false_negative': len(gt_boxes)}
 
-    gt_idx_thr = []
-    pred_idx_thr = []
-    ious = []
-    for ipb, pred_box in enumerate(pred_boxes):
-        for igb, gt_box in enumerate(gt_boxes):
+    output = {'true_positive': 0, 'false_positive': 0, 'false_negative': 0}
+    matched_gt_boxes = {gt_box: False for gt_box in gt_boxes}
+
+    for pred_box in pred_boxes:
+        matched = False
+        for gt_box in gt_boxes:
+            if matched_gt_boxes[gt_box]:
+                continue
             iou = calc_iou(gt_box, pred_box)
 
             if iou > iou_thr:
-                gt_idx_thr.append(igb)
-                pred_idx_thr.append(ipb)
-                ious.append(iou)
-    iou_sort = np.argsort(ious)[::1]
-    if len(iou_sort) == 0:
-        tp = 0
-        fp = 0
-        fn = 0
-        return {'true_positive': tp, 'false_positive': fp, 'false_negative': fn}
-    else:
-        gt_match_idx = []
-        pred_match_idx = []
-        for idx in iou_sort:
-            gt_idx = gt_idx_thr[idx]
-            pr_idx = pred_idx_thr[idx]
-            # If the boxes are unmatched, add them to matches
-            if (gt_idx not in gt_match_idx) and (pr_idx not in pred_match_idx):
-                gt_match_idx.append(gt_idx)
-                pred_match_idx.append(pr_idx)
-        tp = len(gt_match_idx)
-        fp = len(pred_boxes) - len(pred_match_idx)
-        fn = len(gt_boxes) - len(gt_match_idx)
-    return {'true_positive': tp, 'false_positive': fp, 'false_negative': fn}
+                output['true_positive'] += 1
+                matched = True
+                matched_gt_boxes[gt_box] = True
+                break
+        if not matched:
+            output['false_positive'] += 1
+
+    output['false_negative'] = len(gt_boxes) - output['true_positive']
+    return output
 
 
-def calculate_tp_fp_fn_for_single_class_and_image(image, expected_boxes, test_class, yolo):
+def calculate_tp_fp_fn_for_single_class_and_image(image, expected_boxes, expected_classes, test_class, yolo):
     prediction_boxes, _ = detect_object(yolo, image, save_img=False, save_img_path="", postfix="")
     adapted_predicted_boxes = [box[0:4] for box in prediction_boxes if box[4] == test_class]
-    print(prediction_boxes)
-    print(adapted_predicted_boxes)
+    adapted_expected_boxes = [box for i, box in enumerate(expected_boxes) if expected_classes[i] == test_class]
 
-    return get_single_image_results(expected_boxes, adapted_predicted_boxes)
+    return get_single_image_results(adapted_expected_boxes, adapted_predicted_boxes)
 
 
 def calculate_precision(data):
@@ -171,7 +140,7 @@ def calculate_precision(data):
         img_results = {}
         for test in data:
             img_results[test["image"]] = calculate_tp_fp_fn_for_single_class_and_image(test["image"], test["boxes"],
-                                                                                       test_class, yolo)
+                                                                                       test["classes"], test_class, yolo)
         results[str(test_class)]["precision"], results["0"]["recall"] = calc_precision_recall(img_results)
 
     return results
