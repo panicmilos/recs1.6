@@ -40,7 +40,7 @@ from Utils.Train_Utils import (
     data_generator_wrapper
 )
 
-YOLO_filename = "training/data_train.csv"
+YOLO_filename = "training/training_data.csv.csv"
 YOLO_classname = "model_data/data_classes.txt"
 anchors_path = "model_data/yolo_anchors.txt"
 weights_path = "model_data/yolo.h5"
