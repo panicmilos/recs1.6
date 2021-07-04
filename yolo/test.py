@@ -190,5 +190,5 @@ def print_results(found_results, accuracy):
 
 if __name__ == "__main__":
     test_data = parse_test_data()
-    results, calculated_accuracy = calculate_precision_recall_accuracy(test_data)
-    print_results(results, accuracy)
+    calculated_results, calculated_accuracy = calculate_precision_recall_accuracy(test_data)
+    print_results(calculated_results, calculated_accuracy)
