@@ -1,6 +1,6 @@
 # ReCS1.6
 
-ReCS1.6 predstavlja projekat koji je sposoban da prepozna i klasifikuje timove igrača iz sada već legendarne igrice Counter Strike 1.6. Igrica ima dva tima, to su "Kanteri" i "Terori" od kojih u svakom timu postoji 4 različita modela. 
+ReCS1.6 predstavlja projekat koji je sposoban da prepozna i klasifikuje timove igrača iz sada već legendarne igrice Counter Strike 1.6. Igrica ima dva tima, to su "Kanteri" i "Terori" od kojih u svakom timu postoje 4 različita modela. 
 
 ## Članovi tima:
 
@@ -25,6 +25,9 @@ Ukupan _accuracy_ na 200 test slika iznosi 96.62%.
 U folderu yolo/comparisons se nalaze slike za poređenje između mreže istrenirane nad 700 i nad 1800 slika.
 
 ## Korišćenje:
+
+Sve potrebne zavisnosti se mogu instalirati uz pomoć komande `pip install -r requirements.txt`.   
+Kako bi <i>tensorflow</i> koristio grafičku karticu, verzija <i>tensorflow</i> i <i>tensorflow-gpu</i> je <i>2.3.0, dok je verzija <i>CUDA</i> drajvera 10.1 a <i>cuDNN</i> <i>7.6</i>.
 
 `main.py` se pokreće komandom `python main.py` i sadrži pomoćne funkcije za:
 <ul>
