@@ -178,7 +178,7 @@ def parse_test_data():
 
 def print_results(found_results, accuracy):
     print("*******************************************************")
-    print("Total accuracy : " + accuracy + "%")
+    print("Total accuracy : " + str(accuracy) + "%")
     print("----------------------------")
     print("Counter precision : " + str(found_results["0"]["precision"] * 100) + "%")
     print("Counter recall : " + str(found_results["0"]["recall"] * 100) + "%")
