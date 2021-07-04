@@ -10,8 +10,9 @@ ReCS1.6 predstavlja projekat koji je sposoban da prepozna i klasifikuje timove i
 ## Resursi:
 
 [Slike iz skupa podataka](https://drive.google.com/drive/u/2/folders/1JEGqHTQcQaakKBCeB5WB9aVWa_1sM1R8)   
-[Anotacije slika](https://docs.google.com/spreadsheets/d/1EqSbc1H2dcpJ1exzEMBKa17dtIzj-pyN0ISjIFKpWi4/edit?usp=sharing)   
-[Istrenirane težine](https://drive.google.com/drive/folders/1qV30VXTh__nHawVNBPEsrHV-v6kL4gCA?usp=sharing)
+[Labele slika](https://docs.google.com/spreadsheets/d/1EqSbc1H2dcpJ1exzEMBKa17dtIzj-pyN0ISjIFKpWi4/edit?usp=sharing)   
+[Istrenirane težine](https://drive.google.com/drive/folders/1qV30VXTh__nHawVNBPEsrHV-v6kL4gCA?usp=sharing)    
+(sve resurse smo mi pravili)
 
 ## Rezultati:
 Ukupan _accuracy_ na 200 test slika iznosi 96.62%.
