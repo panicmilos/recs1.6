@@ -4,7 +4,7 @@ import pyautogui
 from PIL import Image
 from pynput import keyboard
 import argparse
-from yolo import YOLO, detect_video, detect_webcam
+from yolo.yolo import YOLO, detect_video, detect_webcam
 from timeit import default_timer as timer
 import pandas as pd
 import numpy as np
@@ -12,7 +12,7 @@ from time import sleep, time
 
 from Utils.Get_File_Paths import GetFileList
 from Utils.Train_Utils import get_anchors
-from Utils.utils import detect_object_wo_io
+from Utils.utils import detect_object_wo_io, detect_object
 
 def get_parent_dir(n=1):
     """returns the n-th parent dicrectory of the current
@@ -364,8 +364,8 @@ if __name__ == "__main__":
         "--postfix",
         type=str,
         dest="postfix",
-        default="_catface",
-        help='Specify the postfix for images with bounding boxes. Default is "_catface"',
+        default="_recs1.6",
+        help='Specify the postfix for images with bounding boxes. Default is "_recs1.6"',
     )
 
     parser.add_argument(
