@@ -122,7 +122,7 @@ def calculate_tp_fp_fn_for_single_class_and_image(image, expected_boxes, expecte
     return get_single_image_results(adapted_expected_boxes, adapted_predicted_boxes)
 
 
-def calculate_precision(data):
+def calculate_precision_recall_accuracy(data):
     yolo = YOLO(
         **{
             "model_path": "model_data/yolo-final.h5",
@@ -135,15 +135,23 @@ def calculate_precision(data):
     )
 
     results = {"0": {}, "1": {}}
+    total_correct_predictions = 0
+    total_attempted_predictions = 0
 
     for test_class in [0, 1]:
         img_results = {}
         for test in data:
             img_results[test["image"]] = calculate_tp_fp_fn_for_single_class_and_image(test["image"], test["boxes"],
                                                                                        test["classes"], test_class, yolo)
-        results[str(test_class)]["precision"], results["0"]["recall"] = calc_precision_recall(img_results)
+            total_correct_predictions += img_results[test["image"]]["true_positive"]
+            total_attempted_predictions += img_results[test["image"]]["true_positive"]
+            total_attempted_predictions += img_results[test["image"]]["false_positive"]
+            total_attempted_predictions += img_results[test["image"]]["false_negative"]
 
-    return results
+        results[str(test_class)]["precision"], results[str(test_class)]["recall"] = calc_precision_recall(img_results)
+
+    accuracy = 100 * total_correct_predictions / total_attempted_predictions
+    return results, accuracy
 
 
 def parse_test_data():
@@ -168,16 +176,19 @@ def parse_test_data():
     return parsed_test_data
 
 
-def print_results(found_results):
+def print_results(found_results, accuracy):
     print("*******************************************************")
-    print("Counter precision : " + found_results["0"]["precision"])
-    print("Counter recall : " + found_results["0"]["recall"])
+    print("Total accuracy : " + accuracy + "%")
     print("----------------------------")
-    print("Terror precision : " + found_results["1"]["precision"])
-    print("Terror recall : " + found_results["1"]["recall"])
+    print("Counter precision : " + str(found_results["0"]["precision"] * 100) + "%")
+    print("Counter recall : " + str(found_results["0"]["recall"] * 100) + "%")
+    print("----------------------------")
+    print("Terror precision : " + str(found_results["1"]["precision"] * 100) + "%")
+    print("Terror recall : " + str(found_results["1"]["recall"] * 100) + "%")
     print("*******************************************************")
 
 
 if __name__ == "__main__":
     test_data = parse_test_data()
-    print_results(calculate_precision(test_data))
+    results, calculated_accuracy = calculate_precision_recall_accuracy(test_data)
+    print_results(results, accuracy)
