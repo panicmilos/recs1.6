@@ -25,6 +25,7 @@ Ukupan _accuracy_ na 200 test slika iznosi 96.62%.
 U folderu yolo/comparisons se nalaze slike za poređenje između mreže istrenirane nad 700 i nad 1800 slika.
 
 <img src="https://github.com/panicmilos/recs1.6/blob/main/demo.gif" />
+
 ## Korišćenje:
 
 Sve potrebne zavisnosti se mogu instalirati uz pomoć komande `pip install -r requirements.txt`.   
